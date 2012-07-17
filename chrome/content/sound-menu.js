@@ -1,4 +1,8 @@
+try {
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm"); 
+Components.utils.import("resource://app/jsmodules/sbProperties.jsm");
+}
+catch (error) {alert("MLyrics: Unexpected error - module import error\n\n" + error)}
 
 if (typeof UnityIntegration == 'undefined') {
   var UnityIntegration = {};
