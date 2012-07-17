@@ -13,6 +13,7 @@ if (typeof UnityIntegration == 'undefined') {
 };
 
 UnityIntegration.soundMenu = {
+	xulAppInfo: null,
 	gMM: null,
 	wm: null,
 	unityServiceProxy: null,
@@ -22,12 +23,21 @@ UnityIntegration.soundMenu = {
 	onLoad: function () {
 		//alert("Unity Integration loaded!");
 		
+		this.xulAppInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
 		this.gMM = Components.classes["@songbirdnest.com/Songbird/Mediacore/Manager;1"].getService(Components.interfaces.sbIMediacoreManager);
 		this.wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
 		this.mainwindow = this.wm.getMostRecentWindow("Songbird:Main");
 		
-		this.unityServiceProxy = Components.classes["@LookingMan.org/Songbird-Nightingale/UnityProxy;1"].createInstance();
-		this.unityServiceProxy = this.unityServiceProxy.QueryInterface(Components.interfaces.IUnityProxy);
+		this.unityServiceProxy = Components.classes["@LookingMan.org/Songbird-Nightingale/UnityProxy;1"].getService(Components.interfaces.IUnityProxy);
+		
+		if (this.xulAppInfo.name == "Songbird")
+			this.unityServiceProxy.InitializeFor("songbird.desktop", "Songbird");
+		else if (this.xulAppInfo.name == "Nightingale")
+			this.unityServiceProxy.InitializeFor("nightingale.desktop", "Nightingale");
+		else {
+			alert("Unity Integration: Unexpected error - your application is not supported")
+			return;
+		}
 		
 		var mm = this.gMM;
 		var that = this;
@@ -93,7 +103,7 @@ UnityIntegration.soundMenu = {
 						var artist = gMM.sequencer.currentItem.getProperty(SBProperties.artistName);
 						var album = gMM.sequencer.currentItem.getProperty(SBProperties.albumName);
 						var track = gMM.sequencer.currentItem.getProperty(SBProperties.trackName);
-						that.unityServiceProxy.SoundMenuSetTrackInfo(artist, album, track, "/home/alex/Temp/Sexy_Girls_22 (70).jpg");
+						that.unityServiceProxy.SoundMenuSetTrackInfo(artist, album, track, null);
 						break;
 						
 					case Components.interfaces.sbIMediacoreEvent.STREAM_START:
