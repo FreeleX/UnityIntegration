@@ -78,7 +78,7 @@ NS_IMETHODIMP UnityProxy::SoundMenuSetName(const char *title)
 	return NS_OK;
 }
 
-NS_IMETHODIMP UnityProxy::SoundMenuSetTrackInfo(const char *artist, const char *album, const char *title, const char *coverFilePath)
+NS_IMETHODIMP UnityProxy::SoundMenuSetTrackInfo(const char *artist = NULL, const char *album = NULL, const char *title = NULL, const char *coverFilePath = NULL)
 {
 	unity_track_metadata_set_artist (trackMetadata, artist);
 	unity_track_metadata_set_album (trackMetadata, album);
@@ -92,12 +92,18 @@ NS_IMETHODIMP UnityProxy::SoundMenuSetTrackInfo(const char *artist, const char *
 	return NS_OK;
 }
 
-NS_IMETHODIMP UnityProxy::SoundMenuSetPlayingState(PRBool playing)
+NS_IMETHODIMP UnityProxy::SoundMenuSetPlayingState(PRInt16 playing)
 {
-	if (!!playing)
-		unity_music_player_set_playback_state (musicPlayer, UNITY_PLAYBACK_STATE_PLAYING);
-	else
+	if (playing < 0) {
 		unity_music_player_set_playback_state (musicPlayer, UNITY_PLAYBACK_STATE_PAUSED);
+		unity_music_player_set_current_track (musicPlayer, NULL);
+	}
+	else if (!!playing) {
+		unity_music_player_set_playback_state (musicPlayer, UNITY_PLAYBACK_STATE_PLAYING);
+	}
+	else {
+		unity_music_player_set_playback_state (musicPlayer, UNITY_PLAYBACK_STATE_PAUSED);
+	}
 		
 	return NS_OK;
 }

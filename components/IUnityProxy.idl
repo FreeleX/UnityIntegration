@@ -8,5 +8,5 @@ interface IUnityProxy : nsISupports
   long Add(in long a, in long b);
   void SoundMenuSetName(in string title);
   void SoundMenuSetTrackInfo(in string artist, in string album, in string title, in string coverFilePath);
-  void SoundMenuSetPlayingState(in PRBool playing);
+  void SoundMenuSetPlayingState(in PRInt16 playing);
 };

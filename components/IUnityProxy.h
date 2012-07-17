@@ -40,8 +40,8 @@ class NS_NO_VTABLE NS_SCRIPTABLE IUnityProxy : public nsISupports {
   /* void SoundMenuSetTrackInfo (in string artist, in string album, in string title, in string coverFilePath); */
   NS_SCRIPTABLE NS_IMETHOD SoundMenuSetTrackInfo(const char *artist, const char *album, const char *title, const char *coverFilePath) = 0;
 
-  /* void SoundMenuSetPlayingState (in PRBool playing); */
-  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRBool playing) = 0;
+  /* void SoundMenuSetPlayingState (in PRInt16 playing); */
+  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRInt16 playing) = 0;
 
 };
 
@@ -52,21 +52,21 @@ class NS_NO_VTABLE NS_SCRIPTABLE IUnityProxy : public nsISupports {
   NS_SCRIPTABLE NS_IMETHOD Add(PRInt32 a, PRInt32 b, PRInt32 *_retval NS_OUTPARAM); \
   NS_SCRIPTABLE NS_IMETHOD SoundMenuSetName(const char *title); \
   NS_SCRIPTABLE NS_IMETHOD SoundMenuSetTrackInfo(const char *artist, const char *album, const char *title, const char *coverFilePath); \
-  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRBool playing); 
+  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRInt16 playing); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_IUNITYPROXY(_to) \
   NS_SCRIPTABLE NS_IMETHOD Add(PRInt32 a, PRInt32 b, PRInt32 *_retval NS_OUTPARAM) { return _to Add(a, b, _retval); } \
   NS_SCRIPTABLE NS_IMETHOD SoundMenuSetName(const char *title) { return _to SoundMenuSetName(title); } \
   NS_SCRIPTABLE NS_IMETHOD SoundMenuSetTrackInfo(const char *artist, const char *album, const char *title, const char *coverFilePath) { return _to SoundMenuSetTrackInfo(artist, album, title, coverFilePath); } \
-  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRBool playing) { return _to SoundMenuSetPlayingState(playing); } 
+  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRInt16 playing) { return _to SoundMenuSetPlayingState(playing); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_IUNITYPROXY(_to) \
   NS_SCRIPTABLE NS_IMETHOD Add(PRInt32 a, PRInt32 b, PRInt32 *_retval NS_OUTPARAM) { return !_to ? NS_ERROR_NULL_POINTER : _to->Add(a, b, _retval); } \
   NS_SCRIPTABLE NS_IMETHOD SoundMenuSetName(const char *title) { return !_to ? NS_ERROR_NULL_POINTER : _to->SoundMenuSetName(title); } \
   NS_SCRIPTABLE NS_IMETHOD SoundMenuSetTrackInfo(const char *artist, const char *album, const char *title, const char *coverFilePath) { return !_to ? NS_ERROR_NULL_POINTER : _to->SoundMenuSetTrackInfo(artist, album, title, coverFilePath); } \
-  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRBool playing) { return !_to ? NS_ERROR_NULL_POINTER : _to->SoundMenuSetPlayingState(playing); } 
+  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRInt16 playing) { return !_to ? NS_ERROR_NULL_POINTER : _to->SoundMenuSetPlayingState(playing); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -118,8 +118,8 @@ NS_IMETHODIMP _MYCLASS_::SoundMenuSetTrackInfo(const char *artist, const char *a
     return NS_ERROR_NOT_IMPLEMENTED;
 }
 
-/* void SoundMenuSetPlayingState (in PRBool playing); */
-NS_IMETHODIMP _MYCLASS_::SoundMenuSetPlayingState(PRBool playing)
+/* void SoundMenuSetPlayingState (in PRInt16 playing); */
+NS_IMETHODIMP _MYCLASS_::SoundMenuSetPlayingState(PRInt16 playing)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }

@@ -4,6 +4,10 @@ Components.utils.import("resource://app/jsmodules/sbProperties.jsm");
 }
 catch (error) {alert("MLyrics: Unexpected error - module import error\n\n" + error)}
 
+const UNITY_PLAYBACK_STATE_PAUSED = 0;
+const UNITY_PLAYBACK_STATE_PLAYING = 1;
+const UNITY_PLAYBACK_STATE_STOPED = -1;
+
 if (typeof UnityIntegration == 'undefined') {
   var UnityIntegration = {};
 };
@@ -86,22 +90,23 @@ UnityIntegration.soundMenu = {
 
 				switch (event.type) {
 					case Components.interfaces.sbIMediacoreEvent.TRACK_CHANGE:
-						//dbus.prepareSignal("/Player", "org.freedesktop.MediaPlayer", "TrackChange");
-						//plugin.getMetadata(mediacore.sequencer.viewPosition);
-						//dbus.sendSignal();
+						var artist = gMM.sequencer.currentItem.getProperty(SBProperties.artistName);
+						var album = gMM.sequencer.currentItem.getProperty(SBProperties.albumName);
+						var track = gMM.sequencer.currentItem.getProperty(SBProperties.trackName);
+						that.unityServiceProxy.SoundMenuSetTrackInfo(artist, album, track, "/home/alex/Temp/Sexy_Girls_22 (70).jpg");
 						break;
 						
 					case Components.interfaces.sbIMediacoreEvent.STREAM_START:
-						that.unityServiceProxy.SoundMenuSetPlayingState(true);
+						that.unityServiceProxy.SoundMenuSetPlayingState(UNITY_PLAYBACK_STATE_PLAYING);
 						break;
 						
 					case Components.interfaces.sbIMediacoreEvent.STREAM_PAUSE:
-						that.unityServiceProxy.SoundMenuSetPlayingState(false);
+						that.unityServiceProxy.SoundMenuSetPlayingState(UNITY_PLAYBACK_STATE_PAUSED);
 						break;
 						
 					case Components.interfaces.sbIMediacoreEvent.STREAM_STOP:
 					case Components.interfaces.sbIMediacoreEvent.STREAM_END:
-						that.unityServiceProxy.SoundMenuSetPlayingState(false);
+						that.unityServiceProxy.SoundMenuSetPlayingState(UNITY_PLAYBACK_STATE_STOPED);
 						break;
 						
 					default:
@@ -111,7 +116,7 @@ UnityIntegration.soundMenu = {
 			});
 		
 		//this.unityServiceProxy.SoundMenuSetTitle("Nightingale");
-		this.unityServiceProxy.SoundMenuSetTrackInfo("Artist11", "Album12", "Track13", "/home/alex/Temp/Sexy_Girls_22 (70).jpg");
+		//this.unityServiceProxy.SoundMenuSetTrackInfo("Artist11", "Album12", "Track13", "/home/alex/Temp/Sexy_Girls_22 (70).jpg");
 
 	},
 	
