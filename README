@@ -4,6 +4,15 @@ It provides integration into Ubuntu Unity
 Copyright (C) 2012 LookingMan
 You can find me on GitHub (as FreeleX) or on Nightingale forums or on getsatisfaction.com
 
+Instructions:
+-------------
+You can use UnityIntegration-latest.xpi file (which may update frequenly), but if it is for the first time several actions MUST be done:
+1. Edit nightingale.desktop or\and songbird.desktop files with text editor and change lines started with Exec= and TryExec= and change paths to point to your Nightingale or\and Songbird executable scripts.
+2. Copy nightingale.desktop or\and songbird.desktop files to /usr/share/applications/ folder.
+3. Copy nightingale.xpm or\and songbird.xpm files to /usr/share/pixmaps/ folder.
+4. You may need to relogin (I'm not sure about it).
+
+
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
 the Free Software Foundation; either version 3 of the License, or
