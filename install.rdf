@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+         xmlns:songbird="http://www.songbirdnest.com/2007/addon-metadata-rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+                   
+  <RDF:Description RDF:about="urn:mozilla:install-manifest"
+                   em:id="unity-integration@lookingman.com"
+                   em:type="2"
+                   em:name="Unity Integration"
+                   em:version="1.0.0"
+                   em:creator="LookingMan"
+                   em:description="Integration into Ubuntu Unity"
+                   em:iconURL="chrome://unity-integration/skin/icon.png"
+                   em:optionsURL="chrome://unity-integration/content/options.xul">
+
+    <em:targetApplication RDF:resource="rdf:#$rGbMF2"/>
+    <em:targetApplication RDF:resource="rdf:#$qGbMF2"/>
+    
+  </RDF:Description>
+  
+  <RDF:Description RDF:about="rdf:#$rGbMF2"
+                   em:id="songbird@songbirdnest.com"
+                   em:maxVersion="2.1.*"
+                   em:minVersion="1.2.*" />
+
+  <RDF:Description RDF:about="rdf:#$qGbMF2"
+                   em:id="nightingale@getnightingale.com"
+                   em:maxVersion="1.12.*"
+                   em:minVersion="1.11.0" />
+</RDF:RDF>

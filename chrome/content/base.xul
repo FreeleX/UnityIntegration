@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE overlay [
+  <!ENTITY % sbDTD SYSTEM "chrome://songbird/locale/songbird.dtd">
+	%sbDTD;
+	<!ENTITY % mlyricsDTD SYSTEM "chrome://unity-integration/locale/overlay.dtd">
+	%unity-integrationDTD;
+]>
+
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	<script type="application/x-javascript" src="chrome://unity-integration/content/sound-menu.js"/>
+</overlay>
