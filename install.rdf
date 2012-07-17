@@ -8,6 +8,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="unity-integration@lookingman.com"
                    em:type="2"
+                   em:targetPlatform="Linux"
                    em:name="Unity Integration"
                    em:version="1.0.0"
                    em:creator="LookingMan"
