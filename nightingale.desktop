@@ -1,0 +1,17 @@
+
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=Nightingale
+GenericName=Nightingale Music Player
+Comment=Plays music
+Exec=/home/alex/Програмы/nightingale/nightingale %U
+TryExec=/home/alex/Програмы/nightingale/nightingale
+Icon=nightingale
+Terminal=false
+Categories=AudioVideo;Player;
+StartupNotify=false
+MimeType=application/ogg;application/x-ogg;application/x-ogm-audio;audio/aac;audio/mp4;audio/mpeg;audio/mpegurl;audio/ogg;audio/vnd.rn-realaudio;audio/vorbis;audio/x-flac;audio/x-mp3;audio/x-mpeg;audio/x-mpegurl;audio/x-ms-wma;audio/x-musepack;audio/x-oggflac;audio/x-pn-realaudio;audio/x-scpls;audio/x-speex;audio/x-vorbis;audio/x-vorbis+ogg;audio/x-wav;video/x-ms-asf;x-content/audio-player;
+X-Ayatana-Desktop-Shortcuts=Play;Pause;Stop;Previous;Next;
+
+Name[ru_UA]=Nightingale
