@@ -1,7 +1,7 @@
 CXX = g++
 CPPFLAGS += -fno-rtti -fno-exceptions -shared
 
-GECKO_SDK_PATH = /home/alex/xulrunner-sdk
+GECKO_SDK_PATH = $(HOME)/xulrunner-sdk
 
 GECKO_CONFIG_INCLUDE = -include mozilla-config.h
 
