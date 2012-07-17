@@ -23,6 +23,7 @@ UnityIntegration.soundMenu = {
 		
 		var mm = this.gMM;
 		var that = this;
+		
 		var soundMenuObserver = {
 				observe : function(subject, topic, data) {
 					switch (topic) {
@@ -32,11 +33,9 @@ UnityIntegration.soundMenu = {
 							var sbIMediacoreStatus = Components.interfaces.sbIMediacoreStatus;
 							if (mm.status.state == sbIMediacoreStatus.STATUS_PAUSED) {
 								mm.playbackControl.play();
-								that.unityServiceProxy.SoundMenuSetPlayingState(true);
 							} else if(mm.status.state == sbIMediacoreStatus.STATUS_PLAYING ||
 							           mm.status.state == sbIMediacoreStatus.STATUS_BUFFERING) {
-								//mm.playbackControl.pause();
-								that.unityServiceProxy.SoundMenuSetPlayingState(false);
+								that.unityServiceProxy.SoundMenuSetPlayingState(true);
 								// Otherwise dispatch a play event.  Someone should catch this
 								// and intelligently initiate playback.  If not, just have
 								// the playback service play the default.
@@ -51,14 +50,13 @@ UnityIntegration.soundMenu = {
 															.getService(Components.interfaces.sbIApplicationController);
 									app.playDefault();
 								}
-								that.unityServiceProxy.SoundMenuSetPlayingState(true);
 							}
 							break;
 							
 						case "sound-menu-pause":
 							songbird.pause();
-							that.unityServiceProxy.SoundMenuSetPlayingState(false);
 							break;
+							
 						case "sound-menu-next":
 							songbird.next();
 							break;
@@ -75,6 +73,38 @@ UnityIntegration.soundMenu = {
 		this.observerService.addObserver(soundMenuObserver, "sound-menu-pause", false);
 		this.observerService.addObserver(soundMenuObserver, "sound-menu-next", false);
 		this.observerService.addObserver(soundMenuObserver, "sound-menu-previous", false);
+		
+		this.gMM.addListener({
+			onMediacoreEvent : function(event) {
+				var item = event.data;
+				if (that.gMM.sequencer.view == null) return;
+				var list = that.gMM.sequencer.view.mediaList;
+
+				switch (event.type) {
+					case Components.interfaces.sbIMediacoreEvent.TRACK_CHANGE:
+						//dbus.prepareSignal("/Player", "org.freedesktop.MediaPlayer", "TrackChange");
+						//plugin.getMetadata(mediacore.sequencer.viewPosition);
+						//dbus.sendSignal();
+						break;
+						
+					case Components.interfaces.sbIMediacoreEvent.STREAM_START:
+						that.unityServiceProxy.SoundMenuSetPlayingState(true);
+						break;
+						
+					case Components.interfaces.sbIMediacoreEvent.STREAM_PAUSE:
+						that.unityServiceProxy.SoundMenuSetPlayingState(false);
+						break;
+						
+					case Components.interfaces.sbIMediacoreEvent.STREAM_STOP:
+					case Components.interfaces.sbIMediacoreEvent.STREAM_END:
+						that.unityServiceProxy.SoundMenuSetPlayingState(false);
+						break;
+						
+					default:
+						break;
+				}
+			}
+			});
 		
 		//this.unityServiceProxy.SoundMenuSetTitle("Nightingale");
 		this.unityServiceProxy.SoundMenuSetTrackInfo("Artist11", "Album12", "Track13", "/home/alex/Temp/Sexy_Girls_22 (70).jpg");
