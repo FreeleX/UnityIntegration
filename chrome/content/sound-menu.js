@@ -14,6 +14,7 @@ if (typeof UnityIntegration == 'undefined') {
 
 UnityIntegration.soundMenu = {
 	xulAppInfo: null,
+	stringConverter: null,
 	gMM: null,
 	wm: null,
 	unityServiceProxy: null,
@@ -24,6 +25,7 @@ UnityIntegration.soundMenu = {
 		//alert("Unity Integration loaded!");
 		
 		this.xulAppInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
+		this.stringConverter = Components.classes['@mozilla.org/intl/scriptableunicodeconverter'].getService(Components.interfaces.nsIScriptableUnicodeConverter);
 		this.gMM = Components.classes["@songbirdnest.com/Songbird/Mediacore/Manager;1"].getService(Components.interfaces.sbIMediacoreManager);
 		this.wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
 		this.mainwindow = this.wm.getMostRecentWindow("Songbird:Main");
@@ -39,6 +41,7 @@ UnityIntegration.soundMenu = {
 			return;
 		}
 		
+		this.stringConverter.charset = 'utf-8';
 		var mm = this.gMM;
 		var that = this;
 		
@@ -100,9 +103,9 @@ UnityIntegration.soundMenu = {
 
 				switch (event.type) {
 					case Components.interfaces.sbIMediacoreEvent.TRACK_CHANGE:
-						var artist = gMM.sequencer.currentItem.getProperty(SBProperties.artistName);
-						var album = gMM.sequencer.currentItem.getProperty(SBProperties.albumName);
-						var track = gMM.sequencer.currentItem.getProperty(SBProperties.trackName);
+						var artist = that.stringConverter.ConvertFromUnicode(gMM.sequencer.currentItem.getProperty(SBProperties.artistName));
+						var album = that.stringConverter.ConvertFromUnicode(gMM.sequencer.currentItem.getProperty(SBProperties.albumName));
+						var track = that.stringConverter.ConvertFromUnicode(gMM.sequencer.currentItem.getProperty(SBProperties.trackName));
 						that.unityServiceProxy.SoundMenuSetTrackInfo(artist, album, track, null);
 						break;
 						
@@ -124,10 +127,6 @@ UnityIntegration.soundMenu = {
 				}
 			}
 			});
-		
-		//this.unityServiceProxy.SoundMenuSetTitle("Nightingale");
-		//this.unityServiceProxy.SoundMenuSetTrackInfo("Artist11", "Album12", "Track13", "/home/alex/Temp/Sexy_Girls_22 (70).jpg");
-
 	},
 	
 	onUnLoad: function () {
