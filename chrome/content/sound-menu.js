@@ -138,7 +138,10 @@ UnityIntegration.soundMenu = {
 	},
 	
 	downloadFileToTemp: function (aWebURL, aCallback) {
-		if (!aWebURL || aWebURL == "") aCallback(null);
+		if (!aWebURL || aWebURL == "") {
+			aCallback(null);
+			return;
+		}
 		
 		// The tempFile we are saving to.
 		var tempFile = Cc["@mozilla.org/file/directory_service;1"]
