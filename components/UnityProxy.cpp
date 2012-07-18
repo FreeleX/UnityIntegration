@@ -13,11 +13,9 @@ void onPlayPause (GtkWidget *window,
 {
 	UnityPlaybackState playbackState = unity_music_player_get_playback_state (musicPlayer);
 	if (playbackState == UNITY_PLAYBACK_STATE_PLAYING) {
-		//unity_music_player_set_playback_state(musicPlayer, UNITY_PLAYBACK_STATE_PAUSED);
 		observerService->NotifyObservers (NULL, "sound-menu-pause", NULL);
 	}
 	else {
-		//unity_music_player_set_playback_state(musicPlayer, UNITY_PLAYBACK_STATE_PLAYING);
 		observerService->NotifyObservers (NULL, "sound-menu-play", NULL);
 	}
 }
@@ -34,8 +32,6 @@ void onPrevious  (GtkWidget *window,
 	observerService->NotifyObservers (NULL, "sound-menu-previous", NULL);
 }
 
-// Этот макрос вставляет стандартную реализацию методов AddRef(), Release() и QueryInterface().
-// Параметры - класс и интерфейс.
 NS_IMPL_ISUPPORTS1(UnityProxy, IUnityProxy)
 
 UnityProxy::UnityProxy()
@@ -64,25 +60,6 @@ NS_IMETHODIMP UnityProxy::InitializeFor(const char* desktopFileName, const char*
 	g_signal_connect (G_OBJECT (musicPlayer), "play_pause", G_CALLBACK (onPlayPause), NULL);
 	g_signal_connect (G_OBJECT (musicPlayer), "next", G_CALLBACK (onNext), NULL);
 	g_signal_connect (G_OBJECT (musicPlayer), "previous", G_CALLBACK (onPrevious), NULL);
-	
-	return NS_OK;
-}
-
-// Реализация метода Add()
-NS_IMETHODIMP UnityProxy::Add(PRInt32 a, PRInt32 b, PRInt32 *_retval)
-{	
-	UnityLauncherEntry* entry1 = unity_launcher_entry_get_for_desktop_id ("firefox.desktop");
-	unity_launcher_entry_set_count_visible (entry1, true);
-
-	*_retval = a + b;
-	return NS_OK;
-}
-
-NS_IMETHODIMP UnityProxy::SoundMenuSetName(const char *title)
-{
-	if (!musicPlayer) return NS_ERROR_NOT_INITIALIZED;
-	
-	unity_music_player_set_title (musicPlayer, title);
 	
 	return NS_OK;
 }
