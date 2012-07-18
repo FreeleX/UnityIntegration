@@ -4,10 +4,7 @@
 [scriptable, uuid(629a9e10-cabf-11e1-9b23-0800200c9a66)]
 interface IUnityProxy : nsISupports
 {
-  // Только один метод, для сложения чисел
-  long Add(in long a, in long b);
   void InitializeFor(in string desktopFileName, in string title);
-  void SoundMenuSetName(in string title);
   void SoundMenuSetTrackInfo(in string artist, in string album, in string title, in string coverFilePath);
   void SoundMenuSetPlayingState(in PRInt16 playing);
 };
