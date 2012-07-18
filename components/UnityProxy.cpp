@@ -6,7 +6,8 @@
 static nsCOMPtr<nsIObserverService> observerService = NULL;
 static UnityMusicPlayer *musicPlayer = NULL;
 static UnityTrackMetadata *trackMetadata = NULL;
-static GFile* coverFile = NULL;
+static GFile *coverFile = NULL;
+static GtkWindow *playerGtkWindow = NULL;
 
 void onPlayPause (GtkWidget *window,
                    gpointer data)
@@ -32,6 +33,20 @@ void onPrevious  (GtkWidget *window,
 	observerService->NotifyObservers (NULL, "sound-menu-previous", NULL);
 }
 
+void onRaise (GtkWidget *window,
+               gpointer data)
+{	
+	gdk_window_show( ((GtkWidget*) playerGtkWindow) -> window );
+}
+
+void checkWindowTitle (gpointer data, gpointer user_data) {
+	const gchar *title = gtk_window_get_title((GtkWindow*) data);
+	
+	if (playerGtkWindow || g_strcmp0(title, (char*) user_data)) return;
+	
+	playerGtkWindow = (GtkWindow*) data;
+}
+
 NS_IMPL_ISUPPORTS1(UnityProxy, IUnityProxy)
 
 UnityProxy::UnityProxy()
@@ -46,10 +61,16 @@ UnityProxy::~UnityProxy()
 	unity_music_player_unexport (musicPlayer);
 }
 
-NS_IMETHODIMP UnityProxy::InitializeFor(const char* desktopFileName, const char* title)
+NS_IMETHODIMP UnityProxy::InitializeFor(const char* desktopFileName, const char* title, const char* windowTitle)
 {
+	GList* wlist = gtk_window_list_toplevels();
+	g_list_foreach (wlist, checkWindowTitle, (gpointer) windowTitle);
+	g_list_free(wlist);
+	
+	if (!playerGtkWindow) return NS_ERROR_INVALID_ARG;
+	
 	musicPlayer = unity_music_player_new (desktopFileName);
-	if (!musicPlayer) return NS_ERROR_NOT_INITIALIZED;
+	if (!musicPlayer) return NS_ERROR_INVALID_ARG;
 	
 	unity_music_player_set_title (musicPlayer, title);
 	unity_music_player_export (musicPlayer);
@@ -60,6 +81,7 @@ NS_IMETHODIMP UnityProxy::InitializeFor(const char* desktopFileName, const char*
 	g_signal_connect (G_OBJECT (musicPlayer), "play_pause", G_CALLBACK (onPlayPause), NULL);
 	g_signal_connect (G_OBJECT (musicPlayer), "next", G_CALLBACK (onNext), NULL);
 	g_signal_connect (G_OBJECT (musicPlayer), "previous", G_CALLBACK (onPrevious), NULL);
+	g_signal_connect (G_OBJECT (musicPlayer), "raise", G_CALLBACK (onRaise), NULL);
 	
 	return NS_OK;
 }
@@ -95,5 +117,23 @@ NS_IMETHODIMP UnityProxy::SoundMenuSetPlayingState(PRInt16 playing)
 		unity_music_player_set_playback_state (musicPlayer, UNITY_PLAYBACK_STATE_PAUSED);
 	}
 		
+	return NS_OK;
+}
+
+NS_IMETHODIMP UnityProxy::HideWindow ()
+{
+	if (!musicPlayer) return NS_ERROR_NOT_INITIALIZED;
+	
+	gdk_window_hide( ((GtkWidget*) playerGtkWindow) -> window );
+    
+	return NS_OK;
+}
+
+NS_IMETHODIMP UnityProxy::ShowWindow ()
+{
+	if (!musicPlayer) return NS_ERROR_NOT_INITIALIZED;
+	
+	gdk_window_show( ((GtkWidget*) playerGtkWindow) -> window );
+	
 	return NS_OK;
 }

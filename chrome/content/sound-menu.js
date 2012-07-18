@@ -23,7 +23,9 @@ UnityIntegration.soundMenu = {
 	mainwindow: null,
 	
 	onLoad: function () {
-		//alert("Unity Integration loaded!");
+		var mainwindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsIWebNavigation)
+								.QueryInterface(Components.interfaces.nsIDocShellTreeItem).rootTreeItem
+								.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsIDOMWindow);
 		
 		this.xulAppInfo = Components.classes["@mozilla.org/xre/app-info;1"].getService(Components.interfaces.nsIXULAppInfo);
 		this.stringConverter = Components.classes['@mozilla.org/intl/scriptableunicodeconverter'].getService(Components.interfaces.nsIScriptableUnicodeConverter);
@@ -33,10 +35,12 @@ UnityIntegration.soundMenu = {
 		
 		this.unityServiceProxy = Components.classes["@LookingMan.org/Songbird-Nightingale/UnityProxy;1"].getService(Components.interfaces.IUnityProxy);
 		
+		var windowTitle = mainwindow.document.getElementById("mainplayer").getAttribute("title");
+		
 		if (this.xulAppInfo.name == "Songbird")
-			this.unityServiceProxy.InitializeFor("songbird.desktop", "Songbird");
+			this.unityServiceProxy.InitializeFor("songbird.desktop", "Songbird", windowTitle);
 		else if (this.xulAppInfo.name == "Nightingale")
-			this.unityServiceProxy.InitializeFor("nightingale.desktop", "Nightingale");
+			this.unityServiceProxy.InitializeFor("nightingale.desktop", "Nightingale", windowTitle);
 		else {
 			alert("Unity Integration: Unexpected error - your application is not supported")
 			return;
@@ -45,6 +49,8 @@ UnityIntegration.soundMenu = {
 		this.stringConverter.charset = 'utf-8';
 		var mm = this.gMM;
 		var that = this;
+		
+		mainwindow.onclose = function () {that.unityServiceProxy.HideWindow(); return false;};
 		
 		var soundMenuObserver = {
 				observe : function(subject, topic, data) {
