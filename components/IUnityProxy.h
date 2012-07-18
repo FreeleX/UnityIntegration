@@ -31,8 +31,8 @@ class NS_NO_VTABLE NS_SCRIPTABLE IUnityProxy : public nsISupports {
 
   NS_DECLARE_STATIC_IID_ACCESSOR(IUNITYPROXY_IID)
 
-  /* void InitializeFor (in string desktopFileName, in string title); */
-  NS_SCRIPTABLE NS_IMETHOD InitializeFor(const char *desktopFileName, const char *title) = 0;
+  /* void InitializeFor (in string desktopFileName, in string title, in string windowTitle); */
+  NS_SCRIPTABLE NS_IMETHOD InitializeFor(const char *desktopFileName, const char *title, const char *windowTitle) = 0;
 
   /* void SoundMenuSetTrackInfo (in string artist, in string album, in string title, in string coverFilePath); */
   NS_SCRIPTABLE NS_IMETHOD SoundMenuSetTrackInfo(const char *artist, const char *album, const char *title, const char *coverFilePath) = 0;
@@ -40,27 +40,39 @@ class NS_NO_VTABLE NS_SCRIPTABLE IUnityProxy : public nsISupports {
   /* void SoundMenuSetPlayingState (in PRInt16 playing); */
   NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRInt16 playing) = 0;
 
+  /* void HideWindow (); */
+  NS_SCRIPTABLE NS_IMETHOD HideWindow(void) = 0;
+
+  /* void ShowWindow (); */
+  NS_SCRIPTABLE NS_IMETHOD ShowWindow(void) = 0;
+
 };
 
   NS_DEFINE_STATIC_IID_ACCESSOR(IUnityProxy, IUNITYPROXY_IID)
 
 /* Use this macro when declaring classes that implement this interface. */
 #define NS_DECL_IUNITYPROXY \
-  NS_SCRIPTABLE NS_IMETHOD InitializeFor(const char *desktopFileName, const char *title); \
+  NS_SCRIPTABLE NS_IMETHOD InitializeFor(const char *desktopFileName, const char *title, const char *windowTitle); \
   NS_SCRIPTABLE NS_IMETHOD SoundMenuSetTrackInfo(const char *artist, const char *album, const char *title, const char *coverFilePath); \
-  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRInt16 playing); 
+  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRInt16 playing); \
+  NS_SCRIPTABLE NS_IMETHOD HideWindow(void); \
+  NS_SCRIPTABLE NS_IMETHOD ShowWindow(void); 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object. */
 #define NS_FORWARD_IUNITYPROXY(_to) \
-  NS_SCRIPTABLE NS_IMETHOD InitializeFor(const char *desktopFileName, const char *title) { return _to InitializeFor(desktopFileName, title); } \
+  NS_SCRIPTABLE NS_IMETHOD InitializeFor(const char *desktopFileName, const char *title, const char *windowTitle) { return _to InitializeFor(desktopFileName, title, windowTitle); } \
   NS_SCRIPTABLE NS_IMETHOD SoundMenuSetTrackInfo(const char *artist, const char *album, const char *title, const char *coverFilePath) { return _to SoundMenuSetTrackInfo(artist, album, title, coverFilePath); } \
-  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRInt16 playing) { return _to SoundMenuSetPlayingState(playing); } 
+  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRInt16 playing) { return _to SoundMenuSetPlayingState(playing); } \
+  NS_SCRIPTABLE NS_IMETHOD HideWindow(void) { return _to HideWindow(); } \
+  NS_SCRIPTABLE NS_IMETHOD ShowWindow(void) { return _to ShowWindow(); } 
 
 /* Use this macro to declare functions that forward the behavior of this interface to another object in a safe way. */
 #define NS_FORWARD_SAFE_IUNITYPROXY(_to) \
-  NS_SCRIPTABLE NS_IMETHOD InitializeFor(const char *desktopFileName, const char *title) { return !_to ? NS_ERROR_NULL_POINTER : _to->InitializeFor(desktopFileName, title); } \
+  NS_SCRIPTABLE NS_IMETHOD InitializeFor(const char *desktopFileName, const char *title, const char *windowTitle) { return !_to ? NS_ERROR_NULL_POINTER : _to->InitializeFor(desktopFileName, title, windowTitle); } \
   NS_SCRIPTABLE NS_IMETHOD SoundMenuSetTrackInfo(const char *artist, const char *album, const char *title, const char *coverFilePath) { return !_to ? NS_ERROR_NULL_POINTER : _to->SoundMenuSetTrackInfo(artist, album, title, coverFilePath); } \
-  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRInt16 playing) { return !_to ? NS_ERROR_NULL_POINTER : _to->SoundMenuSetPlayingState(playing); } 
+  NS_SCRIPTABLE NS_IMETHOD SoundMenuSetPlayingState(PRInt16 playing) { return !_to ? NS_ERROR_NULL_POINTER : _to->SoundMenuSetPlayingState(playing); } \
+  NS_SCRIPTABLE NS_IMETHOD HideWindow(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->HideWindow(); } \
+  NS_SCRIPTABLE NS_IMETHOD ShowWindow(void) { return !_to ? NS_ERROR_NULL_POINTER : _to->ShowWindow(); } 
 
 #if 0
 /* Use the code below as a template for the implementation class for this interface. */
@@ -94,8 +106,8 @@ _MYCLASS_::~_MYCLASS_()
   /* destructor code */
 }
 
-/* void InitializeFor (in string desktopFileName, in string title); */
-NS_IMETHODIMP _MYCLASS_::InitializeFor(const char *desktopFileName, const char *title)
+/* void InitializeFor (in string desktopFileName, in string title, in string windowTitle); */
+NS_IMETHODIMP _MYCLASS_::InitializeFor(const char *desktopFileName, const char *title, const char *windowTitle)
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
@@ -108,6 +120,18 @@ NS_IMETHODIMP _MYCLASS_::SoundMenuSetTrackInfo(const char *artist, const char *a
 
 /* void SoundMenuSetPlayingState (in PRInt16 playing); */
 NS_IMETHODIMP _MYCLASS_::SoundMenuSetPlayingState(PRInt16 playing)
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void HideWindow (); */
+NS_IMETHODIMP _MYCLASS_::HideWindow()
+{
+    return NS_ERROR_NOT_IMPLEMENTED;
+}
+
+/* void ShowWindow (); */
+NS_IMETHODIMP _MYCLASS_::ShowWindow()
 {
     return NS_ERROR_NOT_IMPLEMENTED;
 }
