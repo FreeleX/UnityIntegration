@@ -109,7 +109,7 @@ UnityIntegration.soundMenu = {
 						var album = that.stringConverter.ConvertFromUnicode(gMM.sequencer.currentItem.getProperty(SBProperties.albumName));
 						var track = that.stringConverter.ConvertFromUnicode(gMM.sequencer.currentItem.getProperty(SBProperties.trackName));
 						
-						that.downloadFile(resourceURL, function (coverFilePath) {
+						that.downloadFileToTemp(resourceURL, function (coverFilePath) {
 								that.unityServiceProxy.SoundMenuSetTrackInfo(artist, album, track, coverFilePath);
 							});
 						break;
@@ -137,7 +137,7 @@ UnityIntegration.soundMenu = {
 	onUnLoad: function () {
 	},
 	
-	downloadFile: function (aWebURL, aCallback) {
+	downloadFileToTemp: function (aWebURL, aCallback) {
 		if (!aWebURL || aWebURL == "") aCallback(null);
 		
 		// The tempFile we are saving to.
