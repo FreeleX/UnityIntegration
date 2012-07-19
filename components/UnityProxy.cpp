@@ -150,6 +150,8 @@ NS_IMETHODIMP UnityProxy::SoundMenuSetTrackInfo (const char *title, const char *
 			NotifyNotification *unityNotification = notify_notification_new (summaryStr, bodyStr, icon);
 			notify_notification_show (unityNotification, NULL);
 			
+			g_object_unref(unityNotification);
+			
 			g_free (summaryStr);
 			g_free (bodyStr);
 		}
