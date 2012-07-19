@@ -9,7 +9,7 @@ GECKO_DEFINES  = -DXPCOM_GLUE -DXPCOM_GLUE_USE_NSPR
 
 GECKO_INCLUDES = -I$(GECKO_SDK_PATH)/include -I$(GECKO_SDK_PATH)/sdk/include `pkg-config --cflags gtk+-2.0` `pkg-config --cflags unity`
 
-GECKO_LDFLAGS =  -L$(GECKO_SDK_PATH)/lib -lxpcomglue_s -lxul -lxpcom -lplds4 -lplc4 -lnspr4 -lpthread -ldl `pkg-config --libs gtk+-2.0` -lunity
+GECKO_LDFLAGS =  -L$(GECKO_SDK_PATH)/lib -lxpcomglue_s -lxul -lxpcom -lplds4 -lplc4 -lnspr4 -lpthread -ldl `pkg-config --libs gtk+-2.0` -lunity `pkg-config --libs libnotify`
 
 FILES = UnityProxy.cpp UnityProxyModule.cpp
 
