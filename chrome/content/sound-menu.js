@@ -43,13 +43,17 @@ UnityIntegration.soundMenu = {
 		var windowTitle = mainwindow.document.getElementById("mainplayer").getAttribute("title");
 		
 		if (this.xulAppInfo.name == "Songbird")
-			this.unityServiceProxy.InitializeFor("songbird.desktop", "Songbird", windowTitle);
+			this.unityServiceProxy.InitializeFor("songbird.desktop", windowTitle);
 		else if (this.xulAppInfo.name == "Nightingale")
-			this.unityServiceProxy.InitializeFor("nightingale.desktop", "Nightingale", windowTitle);
+			this.unityServiceProxy.InitializeFor("nightingale.desktop", windowTitle);
 		else {
 			alert("Unity Integration: Unexpected error - your application is not supported")
 			return;
 		}
+		
+		this.unityServiceProxy.EnableNotifications(
+				UnityIntegration.soundMenu.prefs.getBoolPref("enableNotifications")
+			);
 		
 		this.stringConverter.charset = 'utf-8';
 		var mm = this.gMM;
@@ -121,7 +125,7 @@ UnityIntegration.soundMenu = {
 						var track = that.stringConverter.ConvertFromUnicode(gMM.sequencer.currentItem.getProperty(SBProperties.trackName));
 						
 						that.downloadFileToTemp(resourceURL, function (coverFilePath) {
-								that.unityServiceProxy.SoundMenuSetTrackInfo(artist, album, track, coverFilePath);
+								that.unityServiceProxy.SoundMenuSetTrackInfo(track, artist, album, coverFilePath);
 							});
 						break;
 						
@@ -241,6 +245,11 @@ UnityIntegration.soundMenu = {
 				case "hideOnClose":
 					UnityIntegration.soundMenu.registerOnClose(true);
 					break;
+					
+				case "enableNotifications":
+					UnityIntegration.soundMenu.unityServiceProxy.EnableNotifications(
+							UnityIntegration.soundMenu.prefs.getBoolPref("enableNotifications")
+						);
 			}
 		}
 	}

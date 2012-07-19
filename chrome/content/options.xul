@@ -15,13 +15,15 @@
 	
 	<prefpane label="&unity-integration.options.title;">
 		<preferences>
-			<preference id="pref_hideOnClose" name="extensions.unity-integration.hideOnClose" type="bool"/> 
+			<preference id="pref_hideOnClose" name="extensions.unity-integration.hideOnClose" type="bool" />
+			<preference id="pref_enableNotifications" name="extensions.unity-integration.enableNotifications" type="bool" />
 		</preferences>
 
 		<groupbox>
 			<caption label="General"/>
 			
 			<checkbox preference="pref_hideOnClose" label="&unity-integration.options.hideOnClose;" />
+			<checkbox preference="pref_enableNotifications" label="&unity-integration.options.enableNotifications;" />
 		</groupbox>
 	</prefpane>
 

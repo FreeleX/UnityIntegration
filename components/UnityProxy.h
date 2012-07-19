@@ -5,6 +5,7 @@
 
 #include <gtk/gtk.h>
 #include <unity.h>
+#include <libnotify/notify.h>
 
 #define UNITY_PROXY_CONTRACTID "@LookingMan.org/Songbird-Nightingale/UnityProxy;1"
 #define UNITY_PROXY_CLASSNAME  "Proxy for libunity"
