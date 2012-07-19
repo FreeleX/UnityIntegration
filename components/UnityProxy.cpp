@@ -6,7 +6,6 @@
 static nsCOMPtr<nsIObserverService> observerService = NULL;
 static UnityMusicPlayer *musicPlayer = NULL;
 static UnityTrackMetadata *trackMetadata = NULL;
-static GFile *coverFile = NULL;
 static GtkWindow *playerGtkWindow = NULL;
 
 void onPlayPause (GtkWidget *window,
@@ -94,10 +93,12 @@ NS_IMETHODIMP UnityProxy::SoundMenuSetTrackInfo(const char *artist, const char *
 	unity_track_metadata_set_album (trackMetadata, album);
 	unity_track_metadata_set_title (trackMetadata, title);
 	
-	coverFile = g_file_new_for_path(coverFilePath);
+	GFile *coverFile = g_file_new_for_path(coverFilePath);
 	unity_track_metadata_set_art_location(trackMetadata, coverFile);
 	
 	unity_music_player_set_current_track (musicPlayer, trackMetadata);
+	
+	g_object_unref(coverFile);
 	
 	return NS_OK;
 }
