@@ -3,7 +3,7 @@ Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 Components.utils.import("resource://app/jsmodules/sbProperties.jsm");
 Components.utils.import("resource://app/jsmodules/sbCoverHelper.jsm");
 }
-catch (error) {alert("MLyrics: Unexpected error - module import error\n\n" + error)}
+catch (error) {alert("Unity Integration: Unexpected error - module import error\n\n" + error)}
 
 const UNITY_PLAYBACK_STATE_PAUSED = 0;
 const UNITY_PLAYBACK_STATE_PLAYING = 1;
@@ -21,6 +21,7 @@ UnityIntegration.soundMenu = {
 	unityServiceProxy: null,
 	observerService: null,
 	mainwindow: null,
+	prefs: null,
 	
 	onLoad: function () {
 		var mainwindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsIWebNavigation)
@@ -32,6 +33,10 @@ UnityIntegration.soundMenu = {
 		this.gMM = Components.classes["@songbirdnest.com/Songbird/Mediacore/Manager;1"].getService(Components.interfaces.sbIMediacoreManager);
 		this.wm = Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(Components.interfaces.nsIWindowMediator);
 		this.mainwindow = this.wm.getMostRecentWindow("Songbird:Main");
+		this.prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch("extensions.unity-integration.");
+		this.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
+		
+		UnityIntegration.soundMenu.preferencesObserver.register();
 		
 		this.unityServiceProxy = Components.classes["@LookingMan.org/Songbird-Nightingale/UnityProxy;1"].getService(Components.interfaces.IUnityProxy);
 		
@@ -50,7 +55,7 @@ UnityIntegration.soundMenu = {
 		var mm = this.gMM;
 		var that = this;
 		
-		mainwindow.onclose = function () {that.unityServiceProxy.HideWindow(); return false;};
+		UnityIntegration.soundMenu.registerOnClose();
 		
 		var soundMenuObserver = {
 				observe : function(subject, topic, data) {
@@ -141,6 +146,20 @@ UnityIntegration.soundMenu = {
 	},
 	
 	onUnLoad: function () {
+		UnityIntegration.soundMenu.preferencesObserver.unregister();
+	},
+	
+	registerOnClose: function (force) {
+		if (this.prefs.getBoolPref("hideOnClose")) {
+			var that = this;
+			this.mainwindow.onclose = function () {
+				that.unityServiceProxy.HideWindow(); 
+				return false;
+			}
+		}
+		else if (force) {
+			this.mainwindow.onclose = "";
+		}
 	},
 	
 	downloadFileToTemp: function (aWebURL, aCallback) {
@@ -204,6 +223,26 @@ UnityIntegration.soundMenu = {
 							  null,
 							  null,
 							  tempFile);  // File to save to
+	},
+	
+	preferencesObserver: {
+		register: function () {
+			UnityIntegration.soundMenu.prefs.addObserver("", this, false);
+		},
+		
+		unregister: function () {
+			UnityIntegration.soundMenu.prefs.removeObserver("", this);
+		},
+		
+		observe: function (aSubject, aTopic, aData) {
+			if(aTopic != "nsPref:changed") return;
+			
+			switch (aData) {					
+				case "hideOnClose":
+					UnityIntegration.soundMenu.registerOnClose(true);
+					break;
+			}
+		}
 	}
 };
 
