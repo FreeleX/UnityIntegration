@@ -116,10 +116,10 @@ UnityIntegration.soundMenu = {
 
 				switch (event.type) {
 					case Components.interfaces.sbIMediacoreEvent.TRACK_CHANGE:
-						var resourceURL = gMM.sequencer.currentItem.getProperty(SBProperties.primaryImageURL);
-						var artist = that.stringConverter.ConvertFromUnicode(gMM.sequencer.currentItem.getProperty(SBProperties.artistName));
-						var album = that.stringConverter.ConvertFromUnicode(gMM.sequencer.currentItem.getProperty(SBProperties.albumName));
-						var track = that.stringConverter.ConvertFromUnicode(gMM.sequencer.currentItem.getProperty(SBProperties.trackName));
+						var resourceURL = that.gMM.sequencer.currentItem.getProperty(SBProperties.primaryImageURL);
+						var artist = that.stringConverter.ConvertFromUnicode(that.gMM.sequencer.currentItem.getProperty(SBProperties.artistName));
+						var album = that.stringConverter.ConvertFromUnicode(that.gMM.sequencer.currentItem.getProperty(SBProperties.albumName));
+						var track = that.stringConverter.ConvertFromUnicode(that.gMM.sequencer.currentItem.getProperty(SBProperties.trackName));
 						
 						that.downloadFileToTemp(resourceURL, function (coverFilePath) {
 								that.unityServiceProxy.SoundMenuSetTrackInfo(track, artist, album, coverFilePath);
