@@ -51,15 +51,12 @@ UnityIntegration.soundMenu = {
 			return;
 		}
 		
-		this.unityServiceProxy.EnableNotifications(
-				UnityIntegration.soundMenu.prefs.getBoolPref("enableNotifications")
-			);
+		UnityIntegration.soundMenu.preferencesObserver.observe(null, "needInit", "enableNotifications");
+		UnityIntegration.soundMenu.preferencesObserver.observe(null, "needInit", "hideOnClose");
 		
 		this.stringConverter.charset = 'utf-8';
 		var mm = this.gMM;
 		var that = this;
-		
-		UnityIntegration.soundMenu.registerOnClose();
 		
 		var soundMenuObserver = {
 				observe : function(subject, topic, data) {
@@ -239,7 +236,7 @@ UnityIntegration.soundMenu = {
 		},
 		
 		observe: function (aSubject, aTopic, aData) {
-			if(aTopic != "nsPref:changed") return;
+			if(aTopic != "nsPref:changed" && aTopic != "needInit") return;
 			
 			switch (aData) {					
 				case "hideOnClose":
@@ -247,13 +244,27 @@ UnityIntegration.soundMenu = {
 					break;
 					
 				case "enableNotifications":
-					UnityIntegration.soundMenu.unityServiceProxy.EnableNotifications(
-							UnityIntegration.soundMenu.prefs.getBoolPref("enableNotifications")
-						);
+					var enableNotifPref = UnityIntegration.soundMenu.prefs.getBoolPref("enableNotifications");
+					var enableNotifTBtn = document.getElementById("unity-integration-enableNotifTButton");
+					if (enableNotifPref) {
+						enableNotifTBtn.checked = false;
+						enableNotifTBtn.setAttribute("tooltiptext", "Notifications enabled");
+						enableNotifTBtn.image = "chrome://unity-integration/content/notif-enabled.png";
+					}
+					else {
+						enableNotifTBtn.checked = true;
+						enableNotifTBtn.setAttribute("tooltiptext", "Notifications disabled");
+						enableNotifTBtn.image = "chrome://unity-integration/content/notif-disabled.png";
+					}
+					UnityIntegration.soundMenu.unityServiceProxy.EnableNotifications(enableNotifPref);
 			}
 		}
 	}
 };
+
+function onNotifTButtonClick (element) {
+	UnityIntegration.soundMenu.prefs.setBoolPref("enableNotifications", !element.checked);
+}
 
 window.addEventListener("load",   function(e) { UnityIntegration.soundMenu.onLoad(); },   false);
 window.addEventListener("unload", function(e) { UnityIntegration.soundMenu.onUnLoad(); }, false);
