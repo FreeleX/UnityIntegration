@@ -7,8 +7,10 @@ You can find me on GitHub (as FreeleX) or on Nightingale forums or on getsatisfa
 Instructions:
 -------------
 You can use UnityIntegration-latest.xpi file (which may update frequenly), 
-but if it is for the first time several actions MUST be done in case you installed Songbird\Nightingale not from a package:
-1. Edit nightingale.desktop or\and songbird.desktop files with text editor and change lines started with Exec= and TryExec= and change paths to point to your Nightingale or\and Songbird executable scripts.
+but if you installed Nightingale\Songbird NOT from a .deb package or NOT from PPA 
+and you are using Unity Integration for the first time, several actions MUST be done:
+1. Download nightingale.desktop or\and songbird.desktop files from GitHub.
+1. Edit nightingale.desktop or\and songbird.desktop files with text editor and on lines started with Exec= and TryExec= change paths to point to your Nightingale or\and Songbird executable scripts.
 2. Copy nightingale.desktop or\and songbird.desktop files to /usr/share/applications/ folder.
 3. Copy nightingale.xpm or\and songbird.xpm files to /usr/share/pixmaps/ folder.
 4. You may need to relogin (I'm not sure about it).
