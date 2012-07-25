@@ -4,16 +4,22 @@ It provides integration into Ubuntu Unity
 Copyright (C) 2012 LookingMan
 You can find me on GitHub (as FreeleX) or on Nightingale forums or on getsatisfaction.com
 
-Instructions:
--------------
-You can use UnityIntegration-latest.xpi file (which may update frequenly), 
-but if you installed Nightingale\Songbird NOT from a .deb package or NOT from PPA 
-and you are using Unity Integration for the first time, several actions MUST be done:
-1. Download nightingale.desktop or\and songbird.desktop files from GitHub.
+Use instructions:
+-----------------
+You can use whichever version you deside or try UnityIntegration-latest.xpi file (which may be updated frequenly): 
+https://github.com/FreeleX/UnityIntegration/raw/master/UnityIntegration-latest.xpi 
+but if you are NOT able to launch Nightingale\Songbird from Ubuntu Dash
+and if you are using Unity Integration for the FIRST TIME, several actions MUST BE DONE:
+
+1. Download nightingale.desktop, nightingale.xpm or\and songbird.desktop, songbird.xpm files from GitHub:
+https://github.com/FreeleX/UnityIntegration/raw/master/nightingale.xpm
+https://github.com/FreeleX/UnityIntegration/raw/master/nightingale.desktop
+https://github.com/FreeleX/UnityIntegration/raw/master/songbird.xpm
+https://github.com/FreeleX/UnityIntegration/raw/master/songbird.desktop
 1. Edit nightingale.desktop or\and songbird.desktop files with text editor and on lines started with Exec= and TryExec= change paths to point to your Nightingale or\and Songbird executable scripts.
 2. Copy nightingale.desktop or\and songbird.desktop files to /usr/share/applications/ folder.
 3. Copy nightingale.xpm or\and songbird.xpm files to /usr/share/pixmaps/ folder.
-4. You may need to relogin (I'm not sure about it).
+4. If you did right, you will be able to launch Nightingale from Ubuntu Dash (type nighti...).
 
 
 This program is free software; you can redistribute it and/or modify
