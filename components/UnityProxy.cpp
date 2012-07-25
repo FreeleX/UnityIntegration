@@ -3,15 +3,14 @@
 #include <nsIObserverService.h>
 #include <nsServiceManagerUtils.h>
 
-#define NOTIFY_IGNORE_TIME 10 // seconds
-
 static nsCOMPtr<nsIObserverService> observerService = NULL;
 static UnityMusicPlayer *musicPlayer = NULL;
 static UnityTrackMetadata *trackMetadata = NULL;
 static GtkWindow *playerGtkWindow = NULL;
 static gchar *playerName = NULL;
 static gchar *playerIcon = NULL;
-static GTimer *notifyTimer = NULL;
+static NotifyNotification *unityNotification = NULL;
+static gboolean lockedFromSoundMenu = false;
 
 static gboolean enableNotify = true;
 
@@ -30,14 +29,14 @@ void onPlayPause (GtkWidget *window,
 void onNext (GtkWidget *window,
               gpointer data)
 {
-	g_timer_start (notifyTimer);
+	lockedFromSoundMenu = true;
 	observerService->NotifyObservers (NULL, "sound-menu-next", NULL);
 }
 
 void onPrevious (GtkWidget *window,
                   gpointer data)
 {
-	g_timer_start (notifyTimer);
+	lockedFromSoundMenu = true;
 	observerService->NotifyObservers (NULL, "sound-menu-previous", NULL);
 }
 
@@ -64,13 +63,12 @@ UnityProxy::UnityProxy ()
 	observerService = do_GetService ("@mozilla.org/observer-service;1");
 	
 	trackMetadata = unity_track_metadata_new ();
-	
-	notifyTimer = g_timer_new ();
 }
 
 UnityProxy::~UnityProxy ()
 {
 	unity_music_player_unexport (musicPlayer);
+	g_object_unref(unityNotification);
 	notify_uninit ();
 }
 
@@ -96,6 +94,7 @@ NS_IMETHODIMP UnityProxy::InitializeFor (const char* desktopFileName, const char
 	if (!playerName || !playerIcon) return NS_ERROR_UNEXPECTED;
 	
 	notify_init (playerName);
+	unityNotification = notify_notification_new ("", "", playerIcon);
 	
 	musicPlayer = unity_music_player_new (desktopFileName);
 	if (!musicPlayer) return NS_ERROR_INVALID_ARG;
@@ -130,12 +129,9 @@ NS_IMETHODIMP UnityProxy::SoundMenuSetTrackInfo (const char *title, const char *
 	g_object_unref (coverFile);
 	
 	if (enableNotify && !gtk_window_is_active (playerGtkWindow))
-	{
-		gdouble timElapsedSec = g_timer_elapsed (notifyTimer, NULL);
-		if (timElapsedSec > NOTIFY_IGNORE_TIME)
+	{	
+		if (!lockedFromSoundMenu)
 		{
-			g_timer_start (notifyTimer);
-			
 			gchar *summaryStr = g_strdup_printf ("%s", title);
 			gchar *bodyStr = g_strdup_printf ("%s - %s", artist, album);
 			
@@ -146,14 +142,16 @@ NS_IMETHODIMP UnityProxy::SoundMenuSetTrackInfo (const char *title, const char *
 			else {
 				icon = coverFilePath;
 			}
-			
-			NotifyNotification *unityNotification = notify_notification_new (summaryStr, bodyStr, icon);
+		
+			notify_notification_update(unityNotification, summaryStr, bodyStr, icon);
 			notify_notification_show (unityNotification, NULL);
-			
-			g_object_unref(unityNotification);
 			
 			g_free (summaryStr);
 			g_free (bodyStr);
+		}
+		else
+		{
+			lockedFromSoundMenu = false;
 		}
 	}
 	
