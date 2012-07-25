@@ -17,10 +17,10 @@ https://github.com/FreeleX/UnityIntegration/raw/master/nightingale.xpm
 https://github.com/FreeleX/UnityIntegration/raw/master/nightingale.desktop
 https://github.com/FreeleX/UnityIntegration/raw/master/songbird.xpm
 https://github.com/FreeleX/UnityIntegration/raw/master/songbird.desktop
-1. Edit nightingale.desktop or\and songbird.desktop files with text editor and on lines started with Exec= and TryExec= change paths to point to your Nightingale or\and Songbird executable scripts.
-2. Copy nightingale.desktop or\and songbird.desktop files to /usr/share/applications/ folder.
-3. Copy nightingale.xpm or\and songbird.xpm files to /usr/share/pixmaps/ folder.
-4. If you did right, you will be able to launch Nightingale from Ubuntu Dash (type nighti...).
+2. Edit nightingale.desktop or\and songbird.desktop files with text editor and on lines started with Exec= and TryExec= change paths to point to your Nightingale or\and Songbird executable scripts.
+3. Copy nightingale.desktop or\and songbird.desktop files to /usr/share/applications/ folder.
+4. Copy nightingale.xpm or\and songbird.xpm files to /usr/share/pixmaps/ folder.
+5. If you did right, you will be able to launch Nightingale from Ubuntu Dash (type nighti...).
 
 
 Component build instructions:
@@ -36,7 +36,7 @@ Development files for the GTK+ library
 2. Install libunity development files with: 'sudo apt-get install libunity-dev'
 3. Install libnotify development files with: 'sudo apt-get install libnotify-dev'
 4. Install Development files for the GTK+ library: 'sudo apt-get install libgtk2.0-dev' or\and maybe 'sudo apt-get install libgtk-3-dev'
-4. Edit Makefile in Unity Integration components directory and change on the line:
+5. Edit Makefile in Unity Integration components directory and change on the line:
 GECKO_SDK_PATH = $(HOME)/xulrunner-sdk
 path to point to your gecko sdk directory (no need to change if you just unpacked it to your home directory)
 
