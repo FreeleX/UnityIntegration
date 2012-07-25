@@ -59,7 +59,9 @@ void checkWindowTitle (gpointer data,
 NS_IMPL_ISUPPORTS1 (UnityProxy, IUnityProxy)
 
 UnityProxy::UnityProxy ()
-{	
+{
+	g_message("Unity Integration: loading");
+	
 	observerService = do_GetService ("@mozilla.org/observer-service;1");
 	
 	trackMetadata = unity_track_metadata_new ();
