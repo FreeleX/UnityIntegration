@@ -22,6 +22,7 @@ UnityIntegration.soundMenu = {
 	observerService: null,
 	mainwindow: null,
 	prefs: null,
+	lastItem: null,
 	
 	onLoad: function () {
 		var mainwindow = window.QueryInterface(Components.interfaces.nsIInterfaceRequestor).getInterface(Components.interfaces.nsIWebNavigation)
@@ -116,6 +117,9 @@ UnityIntegration.soundMenu = {
 
 				switch (event.type) {
 					case Components.interfaces.sbIMediacoreEvent.TRACK_CHANGE:
+						if (that.lastItem == that.gMM.sequencer.currentItem) break;
+						else that.lastItem = that.gMM.sequencer.currentItem;
+						
 						var resourceURL = that.gMM.sequencer.currentItem.getProperty(SBProperties.primaryImageURL);
 						var artist = that.stringConverter.ConvertFromUnicode(that.gMM.sequencer.currentItem.getProperty(SBProperties.artistName));
 						var album = that.stringConverter.ConvertFromUnicode(that.gMM.sequencer.currentItem.getProperty(SBProperties.albumName));
